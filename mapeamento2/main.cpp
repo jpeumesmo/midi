@@ -283,6 +283,8 @@ int dxPtIniTrack, dyPtIniTrack;
 int cont;
 int flagInt = 0;
 int posXRec, posYRec;
+int quadranteDireita = 0;
+int quadranteEsquerda =0;
 Mat kernel = (Mat_<int>(3, 3) <<
         0, 1, 0,
         1, -1, 1,
@@ -373,6 +375,7 @@ Mat kernel = (Mat_<int>(3, 3) <<
 
 
 //    std::cout << flagInt << '\n';
+  if (contours.size() > 2 ){
 		switch (numeroPessoas){
 
 
@@ -583,12 +586,86 @@ Mat kernel = (Mat_<int>(3, 3) <<
 
 //		send_note(80 , int(mc[1].x)/10, 0, handle, portaid);
 //    send_note(80, int(mc[0].x)/10, 0, handle, portaid);
+    quadranteEsquerda = int((mc[1].x/120));
+    quadranteDireita = int(((mc[0].x/212));
+
+    switch(quadranteDireita){
+      case(0):{
+        send_note(int(((mc[0].y/848))*127), int(((mc[1].x/480))*127), 0, handle, portaid);
+        send_note(int(((mc[1].y/480))*127), int(((mc[0].x/848))*127), 0, handle, portaid);
+		    ne = int(((mc[1].x/480))*127);
+	  	  nd = int(((mc[0].x/848))*127);
+      }
+      case(1):{
+        send_note(int(((mc[1].y/480))*127), int(((mc[0].x/848))*127), 0, handle, portaid);
+        send_note(int(((mc[0].y/848))*127), int(((mc[1].x/480))*127), 0, handle, portaid);
+		    nd = int(((mc[1].x/480))*127);
+	  	  ne = int(((mc[0].x/848))*127);
+      }
+      case(2):{
+        srand (time(NULL));
+        random1 = rand() % 480 + 1;
+        random2 = rand() % 848 + 1;  
+        send_note(int(((mc[1].y/random1))*127), int(((mc[1].x/480))*127), 0, handle, portaid);
+        send_note(int(((mc[0].y/random2))*127), int(((mc[0].x/848))*127), 0, handle, portaid);
+		    ne = int(((mc[1].x/480))*127);
+	  	  nd = int(((mc[0].x/848))*127);
+      }
+      case(3):{
+        srand (time(NULL));        
+        random1 = rand() % 480 + 1;
+        random2 = rand() % 848 + 1;  
+        send_note(int(((mc[1].y/480))*127), int(((mc[1].x/random1))*127), 0, handle, portaid);
+        send_note(int(((mc[0].y/848))*127), int(((mc[0].x/random2))*127), 0, handle, portaid);
+		    ne = int(((mc[1].x/random1))*127);
+	  	  nd = int(((mc[0].x/random2))*127);
+      }
+      default:{
+
+      }
+    } 
+
+    switch(quadranteEsquerda){
+      case(0):{
+        send_note(int(((mc[0].y/848))*127), int(((mc[1].x/480))*127), 0, handle, portaid);
+        send_note(int(((mc[1].y/480))*127), int(((mc[0].x/848))*127), 0, handle, portaid);
+		    ne = int(((mc[1].x/480))*127);
+	  	  nd = int(((mc[0].x/848))*127);
+      }
+      case(1):{
+        send_note(int(((mc[1].y/480))*127), int(((mc[0].x/848))*127), 0, handle, portaid);
+        send_note(int(((mc[0].y/848))*127), int(((mc[1].x/480))*127), 0, handle, portaid);
+		    nd = int(((mc[1].x/480))*127);
+	  	  ne = int(((mc[0].x/848))*127);
+      }
+      case(2):{
+        srand (time(NULL));
+        random1 = rand() % 480 + 1;
+        random2 = rand() % 848 + 1;  
+        send_note(int(((mc[1].y/random1))*127), int(((mc[1].x/480))*127), 0, handle, portaid);
+        send_note(int(((mc[0].y/random2))*127), int(((mc[0].x/848))*127), 0, handle, portaid);
+		    ne = int(((mc[1].x/480))*127);
+	  	  nd = int(((mc[0].x/848))*127);
+      }
+      case(3):{
+        srand (time(NULL));        
+        random1 = rand() % 480 + 1;
+        random2 = rand() % 848 + 1;  
+        send_note(int(((mc[1].y/480))*127), int(((mc[1].x/random1))*127), 0, handle, portaid);
+        send_note(int(((mc[0].y/848))*127), int(((mc[0].x/random2))*127), 0, handle, portaid);
+		    ne = int(((mc[1].x/random1))*127);
+	  	  nd = int(((mc[0].x/random2))*127);
+      }
+      default:{
+
+      }
+    } 
 
 
-    send_note(int(((mc[1].y/480))*127), int(((mc[1].x/480))*127), 0, handle, portaid);
-    send_note(int(((mc[0].y/848))*127), int(((mc[0].x/848))*127), 0, handle, portaid);
-		ne = int(((mc[1].x/480))*127);
-		nd = int(((mc[0].x/848))*127);
+    //send_note(int(((mc[1].y/480))*127), int(((mc[1].x/480))*127), 0, handle, portaid);
+    //send_note(int(((mc[0].y/848))*127), int(((mc[0].x/848))*127), 0, handle, portaid);
+		//ne = int(((mc[1].x/480))*127);
+		//nd = int(((mc[0].x/848))*127);
 
       break;
 		}
@@ -602,6 +679,7 @@ Mat kernel = (Mat_<int>(3, 3) <<
 			break;
 		}
 		}
+  }
 
 		imshow("frame",frame);
 
